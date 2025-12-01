@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BilyaBits - Secure & Simple File Sharing</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <h1>BilyaBits</h1>
+            </div>
+            <p class="tagline">Upload. Share. Done.</p>
+        </header>
+
+        <main>
+            <div class="upload-area" id="drop-zone">
+                <div class="upload-icon">
+                    <i class="fa-solid fa-cloud-upload-alt"></i>
+                </div>
+                <h2>Drag & Drop files here</h2>
+                <p>or</p>
+                <button class="browse-btn" onclick="document.getElementById('file-input').click()">Browse Files</button>
+                <input type="file" id="file-input" multiple hidden>
+            </div>
+
+            <!-- Pending Files Section -->
+            <div id="pending-container" style="display: none; margin-top: 2rem;">
+                <h3 style="margin-bottom: 1rem;">Files to Upload</h3>
+                <div id="pending-list" class="file-list" style="margin-top: 0; margin-bottom: 1.5rem;"></div>
+
+                <div style="margin-bottom: 1.5rem; text-align: left;">
+                    <label for="expiry-select"
+                        style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Link
+                        Expiry:</label>
+                    <select id="expiry-select"
+                        style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(30, 41, 59, 0.7); border: 1px solid var(--border); color: white; font-family: 'Outfit', sans-serif;">
+                        <option value="10">10 Minutes</option>
+                        <option value="60" selected>1 Hour</option>
+                        <option value="1440">24 Hours</option>
+                        <option value="4320">3 Days</option>
+                    </select>
+                </div>
+
+                <button id="upload-btn" class="browse-btn"
+                    style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fa-solid fa-paper-plane"></i> Generate Share Link
+                </button>
+            </div>
+
+            <div class="upload-progress-container" id="progress-container" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <p id="progress-text">Uploading... 0%</p>
+            </div>
+
+            <div class="file-list" id="file-list">
+                <!-- Uploaded files will appear here -->
+            </div>
+
+            <!-- Recent Uploads Section -->
+            <div id="history-container"
+                style="display: none; margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3 style="font-size: 1.2rem;">Your Recent Uploads</h3>
+                    <button onclick="clearHistory()"
+                        style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.9rem;">
+                        <i class="fa-solid fa-trash"></i> Clear History
+                    </button>
+                </div>
+                <div id="history-list" class="file-list" style="margin-top: 0;"></div>
+            </div>
+
+            <!-- How It Works Section -->
+            <div class="how-it-works" style="margin-top: 4rem; text-align: center;">
+                <h3 style="margin-bottom: 2rem; font-size: 1.5rem;">How It Works</h3>
+                <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <div
+                            style="width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold; font-size: 1.2rem;">
+                            1</div>
+                        <h4>Upload</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Drag & drop your
+                            files. We support images, videos, documents, and more.</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <div
+                            style="width: 50px; height: 50px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold; font-size: 1.2rem;">
+                            2</div>
+                        <h4>Set Expiry</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Choose how long your
+                            link stays active. From 10 minutes to 3 days.</p>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <div
+                            style="width: 50px; height: 50px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-weight: bold; font-size: 1.2rem;">
+                            3</div>
+                        <h4>Share</h4>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.5rem;">Get a secure link
+                            instantly. Share it with anyone, anywhere.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features / Introduction Section -->
+            <div class="features-section"
+                style="margin-top: 4rem; border-top: 1px solid var(--border); padding-top: 2rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem; font-size: 1.5rem;">Why use BilyaBits?</h3>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div class="feature-card"
+                        style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <i class="fa-solid fa-bolt" style="font-size: 2rem; color: #fbbf24; margin-bottom: 1rem;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Lightning Fast</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Optimized for speed. Upload and share
+                            your files in seconds.</p>
+                    </div>
+
+                    <div class="feature-card"
+                        style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <i class="fa-solid fa-shield-halved"
+                            style="font-size: 2rem; color: #10b981; margin-bottom: 1rem;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Secure & Private</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">No login required. Files are
+                            automatically deleted after expiry.</p>
+                    </div>
+
+                    <div class="feature-card"
+                        style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px; text-align: center;">
+                        <i class="fa-solid fa-layer-group"
+                            style="font-size: 2rem; color: #8b5cf6; margin-bottom: 1rem;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Batch Sharing</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Upload multiple files at once and share
+                            them with a single link.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 BilyaBits. No login required.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
