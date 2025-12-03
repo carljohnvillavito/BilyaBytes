@@ -347,6 +347,11 @@ app.get('/expired', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'expired.html'));
 });
 
+// Serve Home Page (Explicitly)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Start Server
 if (require.main === module) {
     const server = app.listen(PORT, () => {
@@ -360,3 +365,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+
