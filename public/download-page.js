@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bundleId = pathParts[pathParts.length - 1];
 
     if (!bundleId) {
-        showError('No bundle ID provided');
+        window.location.href = '/expired';
         return;
     }
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => {
             console.error('Error fetching bundle:', err);
-            showError(err.message);
+            window.location.href = '/expired';
         });
 });
 
