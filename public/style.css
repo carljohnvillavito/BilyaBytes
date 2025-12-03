@@ -73,8 +73,15 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(30px, -30px); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(30px, -30px);
+    }
 }
 
 /* Container */
@@ -128,7 +135,8 @@ header {
     cursor: pointer;
 }
 
-.upload-area:hover, .upload-area.drag-over {
+.upload-area:hover,
+.upload-area.drag-over {
     border-color: var(--primary);
     background: rgba(99, 102, 241, 0.1);
     transform: translateY(-2px);
@@ -218,36 +226,34 @@ header {
     padding: 1rem;
     border-radius: 12px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
     animation: slideIn 0.3s ease-out;
 }
 
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .file-info {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.file-icon {
-    font-size: 1.5rem;
-    color: var(--primary);
-}
-
-.file-details h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
 }
 
 .file-details p {
     font-size: 0.8rem;
     color: var(--text-muted);
+    white-space: nowrap;
 }
 
 .copy-btn {
@@ -280,12 +286,98 @@ footer {
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .upload-area {
+        padding: 2rem 1.5rem;
+    }
+
+    .logo h1 {
+        font-size: 2rem;
+    }
+
+    /* Fix file item layout for mobile */
+    .file-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .file-info {
+        width: 100%;
+    }
+
+    /* Make buttons container full width and wrap properly */
+    .file-item>div[style*="display: flex"] {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .copy-btn {
+        flex: 1;
+        min-width: 120px;
+        justify-content: center;
+        font-size: 0.85rem;
+        padding: 10px 12px;
+    }
+
+    .file-details h3 {
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
+
+    .file-details p {
+        font-size: 0.75rem;
+    }
+}
+
 @media (max-width: 480px) {
     .container {
         padding: 1rem;
     }
-    
+
     .upload-area {
         padding: 2rem 1rem;
     }
+
+    .logo h1 {
+        font-size: 1.8rem;
+    }
+
+    .logo i {
+        font-size: 2rem;
+    }
+
+    /* Stack buttons vertically on very small screens */
+    .file-item>div[style*="display: flex"] {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .copy-btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .file-icon {
+        font-size: 1.2rem;
+    }
+
+    .upload-icon {
+        font-size: 3rem;
+    }
+
+    .upload-area h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Desktop: Keep buttons inline and prevent wrapping */
+.file-item>div[style*='display: flex'] {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
