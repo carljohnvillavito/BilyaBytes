@@ -173,9 +173,14 @@ function addBundleToList(bundle) {
                 <p>${formatSize(totalSize)} • ${new Date(bundle.uploadDate).toLocaleTimeString()}</p>
             </div>
         </div>
-        <button class="copy-btn" onclick="copyToClipboard('${viewUrl}', this)">
-            <i class="fa-regular fa-copy"></i> Copy Link
-        </button>
+        <div style="display: flex; gap: 0.5rem;">
+            <button class="copy-btn" onclick="openLink('${viewUrl}')" style="background: rgba(99, 102, 241, 0.2); color: #6366f1;">
+                <i class="fa-solid fa-external-link-alt"></i> Open Link
+            </button>
+            <button class="copy-btn" onclick="copyToClipboard('${viewUrl}', this)">
+                <i class="fa-regular fa-copy"></i> Copy Link
+            </button>
+        </div>
     `;
 
     // Add to main list (if just uploaded)
@@ -237,9 +242,14 @@ function loadHistory() {
                     <p>${formatSize(totalSize)} • ${new Date(bundle.uploadDate).toLocaleString()}</p>
                 </div>
             </div>
-            <button class="copy-btn" onclick="copyToClipboard('${viewUrl}', this)" ${isExpired ? 'disabled style="cursor: not-allowed; opacity: 0.5;"' : ''}>
-                <i class="fa-regular fa-copy"></i> Copy Link
-            </button>
+            <div style="display: flex; gap: 0.5rem;">
+                <button class="copy-btn" onclick="openLink('${viewUrl}')" style="background: rgba(99, 102, 241, 0.2); color: #6366f1;" ${isExpired ? 'disabled style="cursor: not-allowed; opacity: 0.5;"' : ''}>
+                    <i class="fa-solid fa-external-link-alt"></i> Open Link
+                </button>
+                <button class="copy-btn" onclick="copyToClipboard('${viewUrl}', this)" ${isExpired ? 'disabled style="cursor: not-allowed; opacity: 0.5;"' : ''}>
+                    <i class="fa-regular fa-copy"></i> Copy Link
+                </button>
+            </div>
         `;
         historyList.appendChild(fileItem);
     });
@@ -275,5 +285,15 @@ function copyToClipboard(text, btn) {
     });
 }
 
+function openLink(url) {
+    // Open the share link in a new tab
+    window.open(url, '_blank');
+}
+
 // Load history on startup
 document.addEventListener('DOMContentLoaded', loadHistory);
+
+// Fix desktop layout - prevent filename from overlapping buttons
+const style = document.createElement('style');
+style.innerHTML = '.file-info { gap: 1rem !important; flex: 1 !important; min-width: 0 !important; } .file-icon { flex-shrink: 0 !important; } .file-details { flex: 1 !important; min-width: 0 !important; max-width: 100% !important; overflow: hidden !important; } .file-details h3 { overflow: hidden !important; text-overflow: ellipsis !important; white-space: nowrap !important; }';
+document.head.appendChild(style);
