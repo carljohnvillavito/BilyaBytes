@@ -36,9 +36,21 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.use(express.static('public'));
 
 // Configure Multer (Local Temp Storage)
+const isVercel = process.env.VERCEL === '1';
+const uploadDir = isVercel ? '/tmp' : 'uploads/';
+
+// Ensure upload directory exists (only for local 'uploads/')
+if (!isVercel && !fs.existsSync(uploadDir)) {
+    try {
+        fs.mkdirSync(uploadDir);
+    } catch (err) {
+        console.error('Failed to create upload directory:', err);
+    }
+}
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         const uniqueName = `${uuidv4()}${path.extname(file.originalname)}`;
@@ -80,7 +92,7 @@ setInterval(async () => {
                     }
                 } else {
                     // Delete from local disk
-                    const filePath = path.join(__dirname, 'uploads', file.filename);
+                    const filePath = path.join(uploadDir, file.filename);
                     if (fs.existsSync(filePath)) {
                         fs.unlink(filePath, (err) => {
                             if (err) console.error(`Failed to delete ${file.filename}:`, err.message);
@@ -336,12 +348,15 @@ app.get('/expired', (req, res) => {
 });
 
 // Start Server
-const server = app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+    const server = app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
 
-// Increase timeout to 30 minutes for large uploads
-server.timeout = 30 * 60 * 1000;
-server.keepAliveTimeout = 30 * 60 * 1000;
-server.headersTimeout = 30 * 60 * 1000;
+    // Increase timeout to 30 minutes for large uploads
+    server.timeout = 30 * 60 * 1000;
+    server.keepAliveTimeout = 30 * 60 * 1000;
+    server.headersTimeout = 30 * 60 * 1000;
+}
 
+module.exports = app;
