@@ -33,7 +33,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Configure Multer (Local Temp Storage)
 const isVercel = process.env.VERCEL === '1';
